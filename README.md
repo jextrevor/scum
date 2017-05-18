@@ -1,0 +1,3 @@
+# Scum
+
+Written in Python
