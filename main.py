@@ -1,3 +1,9 @@
+from flask import Flask, render_template, request
+from flask_socketio import SocketIO, emit
+import eventlet
+from gevent import monkey
+app = Flask(__name__)
+socketio = SocketIO(app)
 #from shuffle import riffle
 from random import SystemRandom
 #import Image
@@ -8,6 +14,7 @@ from random import SystemRandom
 #Should I have someone "shuffle" the deck?
 #SystemRandom is the best source of true random numbers.
 random = SystemRandom()
+players = 0
 deck = []
 stack1 = []
 stack2 = []
@@ -59,3 +66,23 @@ def deal(stacks):
 shuffle(7)
 stacks = [[],[],[],[]]
 deal(stacks)
+@socketio.on('connect', namespace='/main')
+def connect():
+	players += 1
+	print(players)
+@socketio.on('disconnect', namespace='/main')
+def disconnect():
+	players -= 1
+	print(players)
+@app.route("/")
+def vote():
+	templateData = {}
+	return render_template("main.html",**templateData)
+@app.after_request
+def no_cache(response):
+    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
+    response.headers['Cache-Control'] = 'no-cache, no-store'
+    response.headers['Pragma'] = 'no-cache'
+    return response
+if __name__ == '__main__':
+    socketio.run(app, "0.0.0.0", 3000)

@@ -1,0 +1,44 @@
+@font-face {
+    font-family: card;
+    src: url(../fonts/card.ttf);
+}
+div.center{
+	width:100%;
+	text-align:center;
+  position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+  text-decoration:none;
+  color:white;
+  font-family:card;
+  font-size:100px;
+}
+div.center div{
+	font-size:50px;
+}
+div.full{
+	position:absolute;
+	top:0px;
+	left:0px;
+	bottom:0px;
+	right:0px;
+	background-color:#354652;
+	-webkit-transition:background-color 0.5s;
+	transition:background-color 0.5s;
+}
+@keyframes flash {
+    0% {background-color: #354652;}
+    50% {background-color: #4E697A;}
+    100% {background-color: #354652;}
+}
+div.full:hover{
+	animation-name:flash;
+	animation-duration:4s;
+	animation-iteration-count: infinite;
+}
+
+html, body{
+	height:100%;
+	width:100%;
+	margin:0px;
+}
