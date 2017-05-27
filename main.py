@@ -1,6 +1,6 @@
-from shuffle import riffle
+#from shuffle import riffle
 from random import SystemRandom
-import Image
+#import Image
 #Questions to ask:
 #How do I shuffle? Do I shuffle physically accurately or do I use random.shuffle?
 #Going along with that question, do I want everything to be physically accurate or do I want it to be fast?
@@ -50,5 +50,12 @@ def shuffle(n):
 	for x in range(n):
 		split(position())
 		riffle()
+def deal(stacks):
+	while len(deck) > 0:
+		for x in range(len(stacks)):
+			if len(deck) > 0:
+				stacks[x].append(deck.pop())
 #random.shuffle(deck)
 shuffle(7)
+stacks = [[],[],[],[]]
+deal(stacks)
