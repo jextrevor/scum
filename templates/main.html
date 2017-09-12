@@ -8,7 +8,7 @@
 <body>
 <div id="landing" style="display:block;">
 There are currently <span id="players">0</span> players. <br />
-Number of Players:<input id="number" type="number" min="1" max="8" /><button onclick="doplayers()">Update</button><br />
+Number of Players:<input id="number" type="number" min="1" max="8" value="4" /><button onclick="doplayers()">Update</button><br />
 Player Names:
 <div id="playernames"></div>
 Join as:
@@ -16,7 +16,8 @@ Join as:
 </div>
 <div id="play" style="display:none;">
 <table width="100%" style="height:20%;" cellspacing="0" cellpadding="0"><tr id="playersrow"></tr></table>
-<div id="content" style="height:60%;text-align:center;font-family:card;font-size:3em;"></div>
+<div id="content" style="height:40%;text-align:center;font-family:card;font-size:3em;"></div>
+<table width="100%" style="height:20%;" cellspacing="0" cellpadding="0"><tr id="passrow"><td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td></tr></table>
 <table width="100%" style="height:20%;" cellspacing="0" cellpadding="0"><tr id="cardsrow"></tr></table>
 </div>
 <div id="log"></div>

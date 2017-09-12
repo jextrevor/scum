@@ -2,6 +2,10 @@
     font-family: card;
     src: url(../fonts/card.ttf);
 }
+*{
+	user-select: none;
+	cursor:default;
+}
 div.center{
 	width:100%;
 	text-align:center;
@@ -30,6 +34,7 @@ div.center{
 	left:0px;
 	background-color:gray;
 	height:25%;
+	overflow:hidden;
 }
 #play{
 	height:75%;

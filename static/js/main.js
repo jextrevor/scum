@@ -128,9 +128,25 @@ function dojoin(number){
 	}
 	document.getElementById("cardsrow").innerHTML = "";
 	for(var i = 0; i < stacks[me].length; i++){
-		document.getElementById("cardsrow").innerHTML += "<td class='card' width='(100/"+stacks[me].length+")%' >"+decode(stacks[me][i])+"</td>";
+		document.getElementById("cardsrow").innerHTML += "<td class='card' onclick='docard("+stacks[me][i]+")' width='(100/"+stacks[me].length+")%' >"+decode(stacks[me][i])+"</td>";
 	}
+	updateplayersrow();
 }
 function dochangename(number){
 	socket.emit('name',{"number":number,"name":document.getElementById("playername"+number).value});
+}
+function docard(number){
+
+}
+function dopass(){
+
+}
+function dodouble(){
+
+}
+function dotriple(){
+
+}
+function doquad(){
+	
 }
