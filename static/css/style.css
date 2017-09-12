@@ -13,6 +13,27 @@ div.center{
   font-family:card;
   font-size:100px;
 }
+.card{
+	font-family:card;
+	font-size:1em;
+	border:1px solid black;
+	text-align:center;
+}
+.pla{
+	border:1px solid black;
+	text-align:center;
+}
+#log{
+	width:100%;
+	position: absolute;
+	bottom:0px;
+	left:0px;
+	background-color:gray;
+	height:25%;
+}
+#play{
+	height:75%;
+}
 div.center div{
 	font-size:50px;
 }
@@ -28,7 +49,7 @@ div.full{
 }
 @keyframes flash {
     0% {background-color: #354652;}
-    50% {background-color: #4E697A;}
+    50% {background-color: #AAAAAA;}
     100% {background-color: #354652;}
 }
 div.full:hover{
