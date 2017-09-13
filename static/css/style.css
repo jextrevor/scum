@@ -17,6 +17,9 @@ div.center{
   font-family:card;
   font-size:100px;
 }
+.highlight{
+	background-color:#008000;
+}
 .card{
 	font-family:card;
 	font-size:1em;

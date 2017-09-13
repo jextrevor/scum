@@ -7,6 +7,7 @@ playernames = []
 stacks = []
 me = 0
 playmode = false
+mode = 1
 function decode(card){
 	if(card == 11){
 		return "J";
@@ -136,17 +137,56 @@ function dochangename(number){
 	socket.emit('name',{"number":number,"name":document.getElementById("playername"+number).value});
 }
 function docard(number){
-
+	socket.emit('play',{'mode':mode,'card':number,'player':me});
+	mode = 1;
+	updatepassrow();
 }
 function dopass(){
-
+	mode = 0;
+	updatepassrow();
+	socket.emit('play',{'mode':mode,'player':me});
+	mode = 1;
+	updatepassrow();
 }
 function dodouble(){
-
+	if(mode == 2){
+		mode = 1;
+	}
+	else{
+		mode = 2;
+	}
+	updatepassrow();
 }
 function dotriple(){
-
+	if(mode == 3){
+		mode = 1;
+	}
+	else{
+		mode = 3;
+	}
+	updatepassrow();
 }
 function doquad(){
-	
+	if(mode == 4){
+		mode = 1;
+	}
+	else{
+		mode = 4;
+	}
+	updatepassrow();
+}
+function updatepassrow(){
+	switch(mode){
+		case 4:
+		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla highlight" onclick="doquad()">Quadruple</td>';
+		break;
+		case 3:
+		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla highlight" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td>';
+		break;
+		case 2:
+		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla highlight" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td>';
+		break;
+		default:
+		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td>';
+	}
 }

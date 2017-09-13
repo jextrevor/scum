@@ -23,6 +23,7 @@ card = 0 #Current card, or 1 for passing cards or 0 for blank.
 playerpos = []
 playernames = []
 player = 0 #Current player
+lastplayer = -1
 def clear():
 	global deck, stack1, stack2
 	deck = []
@@ -123,7 +124,23 @@ def message(msg):
 	domessage(msg)
 @socketio.on('play', namespace='/main')
 def playcard(data):
-	pass
+	if data["player"] != player:
+		return;
+	#Determine whether the play is a pass.
+		#Determine whether a pass is allowed.
+		#Pass, and jump to Determine.
+	#Search for the cards in said player's hand
+	#Determine whether cards are higher and match the quantity of cards that have to be played.
+	#Play the cards.
+	#Remove cards from player's hand. If out, set the "next player pos"
+	#Set lastplayer to this player.
+	#Determine who the next player is.
+		#Determine whether the next player has cards in their hand. If not, increment.
+		#Determine whether the next player is lastplayer. If so, set lastplayer to -1 and clear cards.
+		#Set the next player.
+		#Update data.
+		#Update hands.
+		#Note: Lastplayer is SERVER SIDE ONLY.
 @socketio.on('players', namespace='/main')
 def updateplayers(data):
 	domessage("Reformatting for "+str(data["players"])+" players...")
