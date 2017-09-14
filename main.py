@@ -145,7 +145,6 @@ def playcard(data):
 			#Increment passed.
 			#Change player if needed.
 			#Change card if needed.
-
 		pass
 	if data["player"] != player:
 		return
