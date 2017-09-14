@@ -138,14 +138,14 @@ def playcard(data):
 	global card, player, lastplayer, havepassed, playerpos
 	if card == 1:
 		if passed == 0:
-			#Check if mode 0.
+			if data["mode"] == 0:
+				domessage("Cannot pass.")
 			#Check if doubles.
 			#Check if card in hand.
 			#Pass card.
 			#Increment passed.
 			#Change player if needed.
 			#Change card if needed.
-		pass
 	if data["player"] != player:
 		return
 	if data["mode"] == 0:
