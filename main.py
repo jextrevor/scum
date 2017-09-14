@@ -85,7 +85,7 @@ def setup(p):
 		havepassed.append(0)
 	#playerpos = [2,0,1]
 def clearData():
-	global card, playerpos, playernames, player, players, havepassed
+	global card, playerpos, playernames, player, players, havepassed, passed
 	card = 0
 	playerpos = range(players)
 	#playerpos = [2,0,1]
@@ -137,9 +137,15 @@ def message(msg):
 def playcard(data):
 	global card, player, lastplayer, havepassed, playerpos
 	if card == 1:
-		#If passing cards, determine how many cards have been passed and how many are remaining.
-		#Also determine player.
-		#Return.
+		if passed == 0:
+			#Check if mode 0.
+			#Check if doubles.
+			#Check if card in hand.
+			#Pass card.
+			#Increment passed.
+			#Change player if needed.
+			#Change card if needed.
+
 		pass
 	if data["player"] != player:
 		return
@@ -196,6 +202,7 @@ def playcard(data):
 			for x in range(len(stacks)):
 				stacks[x].sort()
 			card = 1
+			player = playerpos[0]
 		else:
 			while True:
 				if playerpos.index(player)+1 == players:
