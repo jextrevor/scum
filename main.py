@@ -125,7 +125,6 @@ clearData()
 updateData()
 @socketio.on('connect', namespace='/main')
 def connect():
-	print "hi"
 	updateData()
 	domessage("One player connected.")
 @socketio.on('disconnect', namespace='/main')
@@ -168,7 +167,6 @@ def playcard(data):
 			break
 		updateData()
 	else:
-		print "hi"
 		if stacks[player].count(data["card"]) < data["mode"]:
 			domessage("Insufficient cards.")
 			return;
@@ -192,8 +190,11 @@ def playcard(data):
 			doshuffle()
 			deal(stacks)
 			switch()
-			#Give two top cards of last player to first player.
-			#Give top card of second to last player to second player.
+			stacks[playerpos[0]].append(stacks[playerpos[players-1]].pop(max(stacks[playerpos[players-1]])))
+			stacks[playerpos[0]].append(stacks[playerpos[players-1]].pop(max(stacks[playerpos[players-1]])))
+			stacks[playerpos[1]].append(stacks[playerpos[players-2]].pop(max(stacks[playerpos[players-2]])))
+			for x in range(len(stacks)):
+				stacks[x].sort()
 			card = 1
 		else:
 			while True:
@@ -203,7 +204,6 @@ def playcard(data):
 					player = playerpos[playerpos.index(player)+1]
 				if len(stacks[player]) == 0:
 					continue
-				print havepassed
 				if havepassed[player]:
 					continue
 				if player == lastplayer:
