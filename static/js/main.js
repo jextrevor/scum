@@ -63,28 +63,23 @@ socket.on("players",function(json){
 socket.on("player",function(json){
 	player = json["player"]
 	updateplayersrow();
-	if(card == 1 && player == me){
-		document.getElementById("content").innerHTML = "Choose a card to pass";
-	}
-	else if(card > 0){
-		document.getElementById("content").innerHTML = decode(card);
-	}
-	else{
-		document.getElementById("content").innerHTML = "";
-	}
+	updatecards();
 });
 socket.on("card",function(json){
 	card = json["card"]
+	updatecards();
+});
+function updatecards(){
 	if(card == 1 && player == me){
 		document.getElementById("content").innerHTML = "Choose a card to pass";
 	}
-	else if(card > 0){
-		document.getElementById("content").innerHTML = decode(card);
+	else if(card != 0){
+		document.getElementById("content").innerHTML = card[1]+"x "+decode(card[0]);
 	}
 	else{
 		document.getElementById("content").innerHTML = "";
 	}
-});
+}
 socket.on("playernames",function(json){
 	document.getElementById("playernames").innerHTML = "";
 	document.getElementById("join").innerHTML = "";
@@ -103,7 +98,7 @@ socket.on("hands",function(json){
 	stacks = json["stacks"]
 	document.getElementById("cardsrow").innerHTML = "";
 	for(var i = 0; i < stacks[me].length; i++){
-		document.getElementById("cardsrow").innerHTML += "<td class='card' width='(100/"+stacks[me].length+")%' >"+decode(stacks[me][i])+"</td>";
+		document.getElementById("cardsrow").innerHTML += "<td class='card' onclick='docard("+stacks[me][i]+")' width='(100/"+stacks[me].length+")%' >"+decode(stacks[me][i])+"</td>";
 	}
 });
 function doplayers(){
@@ -118,15 +113,7 @@ function dojoin(number){
 	var textnode = document.createTextNode("Joining as player "+(number+1)+".");
 	newItem.appendChild(textnode);
 	log.insertBefore(newItem, log.childNodes[0]);
-	if(card == 1 && player == me){
-		document.getElementById("content").innerHTML = "Choose a card to pass";
-	}
-	else if(card > 0){
-		document.getElementById("content").innerHTML = decode(card);
-	}
-	else{
-		document.getElementById("content").innerHTML = "";
-	}
+	updatecards();
 	document.getElementById("cardsrow").innerHTML = "";
 	for(var i = 0; i < stacks[me].length; i++){
 		document.getElementById("cardsrow").innerHTML += "<td class='card' onclick='docard("+stacks[me][i]+")' width='(100/"+stacks[me].length+")%' >"+decode(stacks[me][i])+"</td>";
