@@ -135,17 +135,31 @@ def message(msg):
 	domessage(msg)
 @socketio.on('play', namespace='/main')
 def playcard(data):
-	global card, player, lastplayer, havepassed, playerpos
+	global card, player, lastplayer, havepassed, playerpos, nextplayerpos
 	if card == 1:
+		if data["mode"] == 0:
+			domessage("Cannot pass.")
+			return
+		if data["mode"] > 1:
+			domessage("Cards must be passed one at a time.")
+			return
+		if data["card"] not in stacks[player]:
+			domessage("Insufficient cards.")
+			return
+		stacks[playerpos[players-1]].append(data["card"])
+		stacks[player].remove(data["card"])
+		if passed == 2:
+			player = playerpos[0]
+			card = 0
+			passed = 0
+			return
+		if passed == 1:
+			player = playerpos[1]
+			passed = 2
+			return
 		if passed == 0:
-			if data["mode"] == 0:
-				domessage("Cannot pass.")
-			#Check if doubles.
-			#Check if card in hand.
-			#Pass card.
-			#Increment passed.
-			#Change player if needed.
-			#Change card if needed.
+			passed = 1
+			return
 	if data["player"] != player:
 		return
 	if data["mode"] == 0:
@@ -169,6 +183,8 @@ def playcard(data):
 				for x in range(players):
 					havepassed.append(0)
 				domessage(playernames[player]+" won the round.")
+				if len(stacks[player]) == 0:
+					continue
 			break
 		updateData()
 	else:
@@ -186,9 +202,15 @@ def playcard(data):
 		domessage(playernames[player]+" played "+str(data["mode"])+" "+str(data["card"])+"'s.")
 		for n in range(data["mode"]):
 			stacks[player].remove(data["card"])
+			print "played"
+			print len(stacks[player])
+		print "test0"
 		if len(stacks[player]) == 0:
+			print "test1"
 			nextplayerpos.append(player)
+			print "hi"
 		lastplayer = player
+		print "hi2"
 		if all(len(stack) == 0 for stack in stacks):
 			playerpos = nextplayerpos
 			nextplayerpos = []
@@ -209,16 +231,28 @@ def playcard(data):
 				else:
 					player = playerpos[playerpos.index(player)+1]
 				if len(stacks[player]) == 0:
+					print "pass player "+str(player)
 					continue
 				if havepassed[player]:
+					print "pass player "+str(player)
 					continue
 				if player == lastplayer:
+					print "hi1"
 					lastplayer = -1
+					print "hi2"
 					card = 0
+					print "hi3"
 					havepassed = []
+					print "hi4"
 					for x in range(players):
 						havepassed.append(0)
+					print "hi5"
 					domessage(playernames[player]+" won the round.")
+					print "hi6"
+					if len(stacks[player]) == 0:
+						print "hi7"
+						continue
+					print "hi8"
 				break
 			updateData()
 @socketio.on('players', namespace='/main')
