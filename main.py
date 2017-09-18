@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
+import sys
 import eventlet
 from gevent import monkey
 app = Flask(__name__)
@@ -69,6 +70,7 @@ def deal(stacks):
 def switch():
 	global stacks
 	stackstemp = stacks
+	stacks = []
 	for x in range(players):
 		stacks.append([])
 	for x in range(players):
@@ -118,10 +120,10 @@ def domessage(message):
 		myfile.write(message+"\n")
 	socketio.send(message,namespace="/main")
 setup(4)
+clearData()
 doshuffle()
 deal(stacks)
 switch()
-clearData()
 updateData()
 @socketio.on('connect', namespace='/main')
 def connect():
@@ -135,8 +137,10 @@ def message(msg):
 	domessage(msg)
 @socketio.on('play', namespace='/main')
 def playcard(data):
-	global card, player, lastplayer, havepassed, playerpos, nextplayerpos
+	global card, player, lastplayer, havepassed, playerpos, nextplayerpos, passed
 	if card == 1:
+		if data["player"] != player:
+			return
 		if data["mode"] == 0:
 			domessage("Cannot pass.")
 			return
@@ -146,20 +150,29 @@ def playcard(data):
 		if data["card"] not in stacks[player]:
 			domessage("Insufficient cards.")
 			return
-		stacks[playerpos[players-1]].append(data["card"])
+		a = 1
+		if passed == 2:
+			a = 2
+		stacks[playerpos[players-a]].append(data["card"])
 		stacks[player].remove(data["card"])
 		if passed == 2:
 			player = playerpos[0]
 			card = 0
 			passed = 0
+			stacks[playerpos[players-1]].sort()
+			stacks[playerpos[players-2]].sort()
+			updateData()
 			return
 		if passed == 1:
 			player = playerpos[1]
 			passed = 2
+			updateData()
 			return
 		if passed == 0:
 			passed = 1
+			updateData()
 			return
+		updateData()
 	if data["player"] != player:
 		return
 	if data["mode"] == 0:
@@ -167,24 +180,36 @@ def playcard(data):
 			domessage("Cannot pass.")
 			return
 		havepassed[player] = True
+		print "Just passed!"
 		while True:
 			if playerpos.index(player)+1 == players:
 				player = playerpos[0]
 			else:
 				player = playerpos[playerpos.index(player)+1]
-			if len(stacks[player]) == 0:
-				continue
+			
 			if havepassed[player]:
+				print "has passed, player "+str(player)
 				continue
 			if player == lastplayer:
+				print "WIN!"
 				lastplayer = -1
+				print "breakpoint1"
 				card = 0
+				print "breakpoint2"
 				havepassed = []
+				print "breakpoint3"
 				for x in range(players):
 					havepassed.append(0)
+				print "breakpoint4"
 				domessage(playernames[player]+" won the round.")
+				print "breakpoint5"
 				if len(stacks[player]) == 0:
 					continue
+				print "breakpoint6"
+			if len(stacks[player]) == 0:
+				print "no cards, player "+str(player)
+				continue
+			print "End of function."	
 			break
 		updateData()
 	else:
@@ -217,22 +242,29 @@ def playcard(data):
 			doshuffle()
 			deal(stacks)
 			switch()
-			stacks[playerpos[0]].append(stacks[playerpos[players-1]].pop(max(stacks[playerpos[players-1]])))
-			stacks[playerpos[0]].append(stacks[playerpos[players-1]].pop(max(stacks[playerpos[players-1]])))
-			stacks[playerpos[1]].append(stacks[playerpos[players-2]].pop(max(stacks[playerpos[players-2]])))
+			a1 = max(stacks[playerpos[players-1]])
+			b1 = max(stacks[playerpos[players-2]])
+			stacks[playerpos[0]].append(a1)
+			stacks[playerpos[players-1]].remove(a1)
+			a2 = max(stacks[playerpos[players-1]])
+			stacks[playerpos[0]].append(a2)
+			stacks[playerpos[players-1]].remove(a2)
+			stacks[playerpos[1]].append(b1)
+			stacks[playerpos[players-2]].remove(b1)
+			stacks[playerpos[0]].sort()
+			stacks[playerpos[1]].sort()
 			for x in range(len(stacks)):
 				stacks[x].sort()
 			card = 1
 			player = playerpos[0]
+			updateData()
 		else:
 			while True:
 				if playerpos.index(player)+1 == players:
 					player = playerpos[0]
 				else:
 					player = playerpos[playerpos.index(player)+1]
-				if len(stacks[player]) == 0:
-					print "pass player "+str(player)
-					continue
+				
 				if havepassed[player]:
 					print "pass player "+str(player)
 					continue
@@ -253,6 +285,9 @@ def playcard(data):
 						print "hi7"
 						continue
 					print "hi8"
+				if len(stacks[player]) == 0:
+					print "pass player "+str(player)
+					continue
 				break
 			updateData()
 @socketio.on('players', namespace='/main')

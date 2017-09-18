@@ -30,9 +30,9 @@ function updateplayersrow(){
 	}
 	if(players > 0){
 	var old = document.getElementById("table"+player).innerHTML;
-	document.getElementById("table"+player).innerHTML = "<b>"+old+"</b>";
+	document.getElementById("table"+player).innerHTML = "<i>"+old+"</i>";
 	old = document.getElementById("table"+me).innerHTML;
-	document.getElementById("table"+me).innerHTML = "<i>"+old+"</i>";
+	document.getElementById("table"+me).innerHTML = "<b>"+old+"</b>";
 	}
 }
 socket.on("connect", function(){
@@ -72,6 +72,9 @@ socket.on("card",function(json){
 function updatecards(){
 	if(card == 1 && player == me){
 		document.getElementById("content").innerHTML = "Choose a card to pass";
+	}
+	else if (card == 1){
+		document.getElementById("content").innerHTML = "";
 	}
 	else if(card != 0){
 		document.getElementById("content").innerHTML = card[1]+"x "+decode(card[0]);
@@ -162,18 +165,22 @@ function doquad(){
 	}
 	updatepassrow();
 }
+function dorefresh(){
+	socket.io.disconnect();
+	socket.io.connect();
+}
 function updatepassrow(){
 	switch(mode){
 		case 4:
-		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla highlight" onclick="doquad()">Quadruple</td>';
+		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla highlight" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
 		break;
 		case 3:
-		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla highlight" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td>';
+		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla highlight" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
 		break;
 		case 2:
-		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla highlight" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td>';
+		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla highlight" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
 		break;
 		default:
-		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td>';
+		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
 	}
 }
