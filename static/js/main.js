@@ -30,9 +30,12 @@ function updateplayersrow(){
 	}
 	if(players > 0){
 	var old = document.getElementById("table"+player).innerHTML;
-	document.getElementById("table"+player).innerHTML = "<i>"+old+"</i>";
+	document.getElementById("table"+player).classList.add("highlight");
 	old = document.getElementById("table"+me).innerHTML;
 	document.getElementById("table"+me).innerHTML = "<b>"+old+"</b>";
+	for(var i = 0; i < stacks.length; i++){
+		document.getElementById("table"+i).innerHTML += "<br />"+stacks[i].length;
+	}
 	}
 }
 socket.on("connect", function(){
@@ -103,6 +106,7 @@ socket.on("hands",function(json){
 	for(var i = 0; i < stacks[me].length; i++){
 		document.getElementById("cardsrow").innerHTML += "<td class='card' onclick='docard("+stacks[me][i]+")' width='(100/"+stacks[me].length+")%' >"+decode(stacks[me][i])+"</td>";
 	}
+	updateplayersrow();
 });
 function doplayers(){
 	socket.emit('players',{players:document.getElementById("number").value});
