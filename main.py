@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 import sys
+import os
 import eventlet
 from gevent import monkey
 app = Flask(__name__)
@@ -294,4 +295,4 @@ if __name__ == '__main__':
     if 'PORT' in os.environ:
         socketio.run(app, "0.0.0.0",int(os.environ['PORT']))
     else:
-        socketio.run(app, "0.0.0.0")
+        socketio.run(app, "0.0.0.0", 3000))
