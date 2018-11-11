@@ -82,7 +82,7 @@ def setup(p):
 	stacks = []
 	for x in range(p):
 		stacks.append([])
-	playerpos = range(players)
+	playerpos = list(range(players))
 	havepassed = []
 	for x in range(players):
 		havepassed.append(0)
@@ -90,7 +90,7 @@ def setup(p):
 def clearData():
 	global card, playerpos, playernames, player, players, havepassed, passed
 	card = 0
-	playerpos = range(players)
+	playerpos = list(range(players))
 	#playerpos = [2,0,1]
 	playernames = []
 	nextplayerpos = []
