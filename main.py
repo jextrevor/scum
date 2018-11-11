@@ -180,7 +180,6 @@ def playcard(data):
 			domessage("Cannot pass.")
 			return
 		havepassed[player] = True
-		print "Just passed!"
 		while True:
 			if playerpos.index(player)+1 == players:
 				player = playerpos[0]
@@ -188,28 +187,18 @@ def playcard(data):
 				player = playerpos[playerpos.index(player)+1]
 			
 			if havepassed[player]:
-				print "has passed, player "+str(player)
 				continue
 			if player == lastplayer:
-				print "WIN!"
 				lastplayer = -1
-				print "breakpoint1"
 				card = 0
-				print "breakpoint2"
 				havepassed = []
-				print "breakpoint3"
 				for x in range(players):
 					havepassed.append(0)
-				print "breakpoint4"
 				domessage(playernames[player]+" won the round.")
-				print "breakpoint5"
 				if len(stacks[player]) == 0:
 					continue
-				print "breakpoint6"
 			if len(stacks[player]) == 0:
-				print "no cards, player "+str(player)
 				continue
-			print "End of function."	
 			break
 		updateData()
 	else:
@@ -227,15 +216,9 @@ def playcard(data):
 		domessage(playernames[player]+" played "+str(data["mode"])+" "+str(data["card"])+"'s.")
 		for n in range(data["mode"]):
 			stacks[player].remove(data["card"])
-			print "played"
-			print len(stacks[player])
-		print "test0"
 		if len(stacks[player]) == 0:
-			print "test1"
 			nextplayerpos.append(player)
-			print "hi"
 		lastplayer = player
-		print "hi2"
 		if all(len(stack) == 0 for stack in stacks):
 			playerpos = nextplayerpos
 			nextplayerpos = []
@@ -266,27 +249,17 @@ def playcard(data):
 					player = playerpos[playerpos.index(player)+1]
 				
 				if havepassed[player]:
-					print "pass player "+str(player)
 					continue
 				if player == lastplayer:
-					print "hi1"
 					lastplayer = -1
-					print "hi2"
 					card = 0
-					print "hi3"
 					havepassed = []
-					print "hi4"
 					for x in range(players):
 						havepassed.append(0)
-					print "hi5"
 					domessage(playernames[player]+" won the round.")
-					print "hi6"
 					if len(stacks[player]) == 0:
-						print "hi7"
 						continue
-					print "hi8"
 				if len(stacks[player]) == 0:
-					print "pass player "+str(player)
 					continue
 				break
 			updateData()
