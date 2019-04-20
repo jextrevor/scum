@@ -8,18 +8,6 @@
     cursor: default;
 }
 
-div.center {
-    width: 100%;
-    text-align: center;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    text-decoration: none;
-    color: white;
-    font-family: card;
-    font-size: 100px;
-}
-
 .highlight {
     background-color: #008000;
 }
@@ -48,10 +36,6 @@ div.center {
 
 #play {
     height: 75%;
-}
-
-div.center div {
-    font-size: 50px;
 }
 
 #content {
