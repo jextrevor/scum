@@ -1,4 +1,4 @@
-var socket = io.connect(window.location.protocol+'//'+document.domain+':'+location.port+'/main',{});
+var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port + '/main', {});
 players = 0
 player = 0
 playerpos = []
@@ -8,183 +8,183 @@ stacks = []
 me = 0
 playmode = false
 mode = 1
-function decode(card){
-	if(card == 11){
+function decode(card) {
+	if (card == 11) {
 		return "J";
 	}
-	if(card == 12){
+	if (card == 12) {
 		return "Q";
 	}
-	if(card == 13){
+	if (card == 13) {
 		return "K";
 	}
-	if(card == 14){
+	if (card == 14) {
 		return "A";
 	}
 	return card;
 }
-function updateplayersrow(){
+function updateplayersrow() {
 	document.getElementById("playersrow").innerHTML = "";
-	for(var i = 0; i < players; i++){
-		document.getElementById("playersrow").innerHTML+="<td class='pla' width='(100/"+players+")%' id='table"+playerpos[i]+"'>"+playernames[playerpos[i]]+"</td>";
+	for (var i = 0; i < players; i++) {
+		document.getElementById("playersrow").innerHTML += `<td class='pla' width='(100/${players})%' id='table${playerpos[i]}'>${playernames[playerpos[i]]}</td>`;
 	}
-	if(players > 0){
-	var old = document.getElementById("table"+player).innerHTML;
-	document.getElementById("table"+player).classList.add("highlight");
-	old = document.getElementById("table"+me).innerHTML;
-	document.getElementById("table"+me).innerHTML = "<b>"+old+"</b>";
-	for(var i = 0; i < stacks.length; i++){
-		document.getElementById("table"+i).innerHTML += "<br />"+stacks[i].length;
-	}
+	if (players > 0) {
+		var old = document.getElementById("table" + player).innerHTML;
+		document.getElementById("table" + player).classList.add("highlight");
+		old = document.getElementById("table" + me).innerHTML;
+		document.getElementById("table" + me).innerHTML = `<b>${old}</b>`;
+		for (var i = 0; i < stacks.length; i++) {
+			document.getElementById("table" + i).innerHTML += `<br />${stacks[i].length}`;
+		}
 	}
 }
-socket.on("connect", function(){
+socket.on("connect", function () {
 	var log = document.getElementById("log");
 	var newItem = document.createElement("DIV");
 	var textnode = document.createTextNode("You have been connected!");
 	newItem.appendChild(textnode);
 	log.insertBefore(newItem, log.childNodes[0]);
 });
-socket.on("disconnect", function(){
+socket.on("disconnect", function () {
 	var log = document.getElementById("log");
 	var newItem = document.createElement("DIV");
 	var textnode = document.createTextNode("You have been disconnected!");
 	newItem.appendChild(textnode);
 	log.insertBefore(newItem, log.childNodes[0]);
 });
-socket.on("message", function(msg){
+socket.on("message", function (msg) {
 	var log = document.getElementById("log");
 	var newItem = document.createElement("DIV");
 	var textnode = document.createTextNode(msg);
 	newItem.appendChild(textnode);
 	log.insertBefore(newItem, log.childNodes[0]);
 });
-socket.on("players",function(json){
-	document.getElementById("players").innerHTML=json["players"]
+socket.on("players", function (json) {
+	document.getElementById("players").innerHTML = json["players"]
 	players = json["players"]
 });
-socket.on("player",function(json){
+socket.on("player", function (json) {
 	player = json["player"]
 	updateplayersrow();
 	updatecards();
 });
-socket.on("card",function(json){
+socket.on("card", function (json) {
 	card = json["card"]
 	updatecards();
 });
-function updatecards(){
-	if(card == 1 && player == me){
+function updatecards() {
+	if (card == 1 && player == me) {
 		document.getElementById("content").innerHTML = "Choose a card to pass";
 	}
-	else if (card == 1){
+	else if (card == 1) {
 		document.getElementById("content").innerHTML = "";
 	}
-	else if(card != 0){
-		document.getElementById("content").innerHTML = card[1]+"x "+decode(card[0]);
+	else if (card != 0) {
+		document.getElementById("content").innerHTML = `${card[1]}x ${decode(card[0])}`;
 	}
-	else{
+	else {
 		document.getElementById("content").innerHTML = "";
 	}
 }
-socket.on("playernames",function(json){
+socket.on("playernames", function (json) {
 	document.getElementById("playernames").innerHTML = "";
 	document.getElementById("join").innerHTML = "";
 	playernames = json["playernames"];
-	for(var i = 0; i < json["playernames"].length; i++){
-		document.getElementById("playernames").innerHTML += "Current name: "+json["playernames"][i]+"<input type='text' id='playername"+i+"' /><button onclick='dochangename("+i+")'>Change Name</button><br />";
-		document.getElementById("join").innerHTML += "<button onclick='dojoin("+i+")'>Join as "+(i+1)+"</button><br />";
+	for (var i = 0; i < json["playernames"].length; i++) {
+		document.getElementById("playernames").innerHTML += `Player ${i + 1} Name: ${json["playernames"][i]}<input type='text' id='playername${i}' /><button onclick='dochangename(${i})'>Change Name</button><br />`;
+		document.getElementById("join").innerHTML += `<button onclick='dojoin(${i})'>Join as ${json["playernames"][i]}</button><br />`;
 	}
 });
-socket.on("playerpos",function(json){
+socket.on("playerpos", function (json) {
 	playerpos = json["playerpos"];
 	updateplayersrow();
 });
-socket.on("hands",function(json){
-	
+socket.on("hands", function (json) {
+
 	stacks = json["stacks"]
 	document.getElementById("cardsrow").innerHTML = "";
-	for(var i = 0; i < stacks[me].length; i++){
-		document.getElementById("cardsrow").innerHTML += "<td class='card' onclick='docard("+stacks[me][i]+")' width='(100/"+stacks[me].length+")%' >"+decode(stacks[me][i])+"</td>";
+	for (var i = 0; i < stacks[me].length; i++) {
+		document.getElementById("cardsrow").innerHTML += `<td class='card' onclick='docard(${stacks[me][i]})' width='(100/${stacks[me].length})%' >${decode(stacks[me][i])}</td>`;
 	}
 	updateplayersrow();
 });
-function doplayers(){
-	socket.emit('players',{players:document.getElementById("number").value});
+function doplayers() {
+	socket.emit('players', { players: document.getElementById("number").value });
 }
-function dojoin(number){
+function dojoin(number) {
 	me = number;
 	document.getElementById("landing").style.display = "none";
 	document.getElementById("play").style.display = "block";
 	var log = document.getElementById("log");
 	var newItem = document.createElement("DIV");
-	var textnode = document.createTextNode("Joining as player "+(number+1)+".");
+	var textnode = document.createTextNode(`Joining as player ${number + 1}.`);
 	newItem.appendChild(textnode);
 	log.insertBefore(newItem, log.childNodes[0]);
 	updatecards();
 	document.getElementById("cardsrow").innerHTML = "";
-	for(var i = 0; i < stacks[me].length; i++){
-		document.getElementById("cardsrow").innerHTML += "<td class='card' onclick='docard("+stacks[me][i]+")' width='(100/"+stacks[me].length+")%' >"+decode(stacks[me][i])+"</td>";
+	for (var i = 0; i < stacks[me].length; i++) {
+		document.getElementById("cardsrow").innerHTML += `<td class='card' onclick='docard(${stacks[me][i]})' width='(100/${stacks[me].length})%' >${decode(stacks[me][i])}</td>`;
 	}
 	updateplayersrow();
 }
-function dochangename(number){
-	socket.emit('name',{"number":number,"name":document.getElementById("playername"+number).value});
+function dochangename(number) {
+	socket.emit('name', { "number": number, "name": document.getElementById("playername" + number).value });
 }
-function docard(number){
-	socket.emit('play',{'mode':mode,'card':number,'player':me});
+function docard(number) {
+	socket.emit('play', { 'mode': mode, 'card': number, 'player': me });
 	mode = 1;
 	updatepassrow();
 }
-function dopass(){
+function dopass() {
 	mode = 0;
 	updatepassrow();
-	socket.emit('play',{'mode':mode,'player':me});
+	socket.emit('play', { 'mode': mode, 'player': me });
 	mode = 1;
 	updatepassrow();
 }
-function dodouble(){
-	if(mode == 2){
+function dodouble() {
+	if (mode == 2) {
 		mode = 1;
 	}
-	else{
+	else {
 		mode = 2;
 	}
 	updatepassrow();
 }
-function dotriple(){
-	if(mode == 3){
+function dotriple() {
+	if (mode == 3) {
 		mode = 1;
 	}
-	else{
+	else {
 		mode = 3;
 	}
 	updatepassrow();
 }
-function doquad(){
-	if(mode == 4){
+function doquad() {
+	if (mode == 4) {
 		mode = 1;
 	}
-	else{
+	else {
 		mode = 4;
 	}
 	updatepassrow();
 }
-function dorefresh(){
+function dorefresh() {
 	socket.io.disconnect();
 	socket.io.connect();
 }
-function updatepassrow(){
-	switch(mode){
+function updatepassrow() {
+	switch (mode) {
 		case 4:
-		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla highlight" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
-		break;
+			document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla highlight" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
+			break;
 		case 3:
-		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla highlight" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
-		break;
+			document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla highlight" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
+			break;
 		case 2:
-		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla highlight" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
-		break;
+			document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla highlight" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
+			break;
 		default:
-		document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
+			document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
 	}
 }

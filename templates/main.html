@@ -1,25 +1,41 @@
 <html>
+
 <head>
-<title>Scum</title>
-<link rel="stylesheet" href="/static/css/style.css" type="text/css" />
-<script src="/static/js/socketio.js"></script>
-<script src="/static/js/main.js"></script>
+    <title>Scum</title>
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css" />
+    <script src="/static/js/socketio.js"></script>
+    <script src="/static/js/main.js"></script>
 </head>
+
 <body>
-<div id="landing" style="display:block;">
-There are currently <span id="players">0</span> players. <br />
-Number of Players:<input id="number" type="number" min="4" max="8" value="4" /><button onclick="doplayers()">Update</button><br />
-Player Names:
-<div id="playernames"></div>
-Join as:
-<div id="join"></div>
-</div>
-<div id="play" style="display:none;">
-<table width="100%" style="height:20%;" cellspacing="0" cellpadding="0"><tr id="playersrow"></tr></table>
-<div id="content" style="height:40%;text-align:center;font-family:card;font-size:3em;"></div>
-<table width="100%" style="height:20%;" cellspacing="0" cellpadding="0"><tr id="passrow"><td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td></tr></table>
-<table width="100%" style="height:20%;" cellspacing="0" cellpadding="0"><tr id="cardsrow"></tr></table>
-</div>
-<div id="log"></div>
+    <div id="landing" style="display:block;">
+        There are currently <span id="players">0</span> players. <br />
+        Number of Players:<input id="number" type="number" min="4" max="8" value="4" /><button
+            onclick="doplayers()">Update</button><br />
+        Player Names:
+        <div id="playernames"></div>
+        Join as:
+        <div id="join"></div>
+    </div>
+    <div id="play" style="display:none;">
+        <table width="100%" style="height:20%;" cellspacing="0" cellpadding="0">
+            <tr id="playersrow"></tr>
+        </table>
+        <div id="content"></div>
+        <table width="100%" style="height:20%;" cellspacing="0" cellpadding="0">
+            <tr id="passrow">
+                <td class="pla" onclick="dopass()">Pass</td>
+                <td class="pla" onclick="dodouble()">Double</td>
+                <td class="pla" onclick="dotriple()">Triple</td>
+                <td class="pla" onclick="doquad()">Quadruple</td>
+                <td class="pla" onclick="dorefresh()">Reconnect</td>
+            </tr>
+        </table>
+        <table width="100%" style="height:20%;" cellspacing="0" cellpadding="0">
+            <tr id="cardsrow"></tr>
+        </table>
+    </div>
+    <div id="log"></div>
 </body>
+
 </html>
