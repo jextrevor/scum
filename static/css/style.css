@@ -34,9 +34,14 @@
     position: absolute;
     bottom: 0px;
     left: 0px;
-    background-color: gray;
+    background-color: black;
+    color: #00FF00;
     height: 25%;
-    overflow: hidden;
+    overflow-y: auto;
+    padding-left: 2rem;
+    padding-top: 1rem;
+    font-family: monospace;
+    box-sizing: border-box;
 }
 
 #play {
@@ -51,8 +56,17 @@
 }
 
 #landing {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
     padding-left: 2rem;
+    padding-right: 2rem;
     padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    overflow-y: auto;
+    height: 75%;
+    box-sizing: border-box;
 }
 
 html,
