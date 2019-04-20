@@ -9,7 +9,7 @@
 }
 
 .highlight {
-    background-color: #008000;
+    background-color: #00AAFF;
 }
 
 .card {
@@ -22,6 +22,11 @@
 .pla {
     border: 1px solid black;
     text-align: center;
+}
+
+.clickable:active,
+.card:active {
+    background-color: gray;
 }
 
 #log {
@@ -43,6 +48,11 @@
     text-align: center;
     font-family: card;
     font-size: 3em;
+}
+
+#landing {
+    padding-left: 2rem;
+    padding-top: 1.5rem;
 }
 
 html,

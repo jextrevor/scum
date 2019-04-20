@@ -30,11 +30,12 @@ function updateplayersrow() {
 	}
 	if (players > 0) {
 		var old = document.getElementById("table" + player).innerHTML;
+		document.getElementById("table" + player).innerHTML = `${old} (Their Turn)`;
 		document.getElementById("table" + player).classList.add("highlight");
 		old = document.getElementById("table" + me).innerHTML;
-		document.getElementById("table" + me).innerHTML = `<b>${old}</b>`;
+		document.getElementById("table" + me).innerHTML = `<b>${old} (Me)</b>`;
 		for (var i = 0; i < stacks.length; i++) {
-			document.getElementById("table" + i).innerHTML += `<br />${stacks[i].length}`;
+			document.getElementById("table" + i).innerHTML += `<br />Has ${stacks[i].length} Cards`;
 		}
 	}
 }
@@ -91,7 +92,7 @@ socket.on("playernames", function (json) {
 	document.getElementById("join").innerHTML = "";
 	playernames = json["playernames"];
 	for (var i = 0; i < json["playernames"].length; i++) {
-		document.getElementById("playernames").innerHTML += `Player ${i + 1} Name: ${json["playernames"][i]}<input type='text' id='playername${i}' /><button onclick='dochangename(${i})'>Change Name</button><br />`;
+		document.getElementById("playernames").innerHTML += `Player ${i + 1} Name: <b>${json["playernames"][i]}</b> <input type='text' id='playername${i}' /><button onclick='dochangename(${i})'>Change Name</button><br />`;
 		document.getElementById("join").innerHTML += `<button onclick='dojoin(${i})'>Join as ${json["playernames"][i]}</button><br />`;
 	}
 });
@@ -176,15 +177,15 @@ function dorefresh() {
 function updatepassrow() {
 	switch (mode) {
 		case 4:
-			document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla highlight" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
+			document.getElementById("passrow").innerHTML = '<td class="pla clickable" onclick="dopass()">Pass</td><td class="pla clickable" onclick="dodouble()">Double</td><td class="pla clickable" onclick="dotriple()">Triple</td><td class="pla highlight" onclick="doquad()">Quadruple</td><td class="pla clickable" onclick="dorefresh()">Reconnect</td>';
 			break;
 		case 3:
-			document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla highlight" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
+			document.getElementById("passrow").innerHTML = '<td class="pla clickable" onclick="dopass()">Pass</td><td class="pla clickable" onclick="dodouble()">Double</td><td class="pla highlight" onclick="dotriple()">Triple</td><td class="pla clickable" onclick="doquad()">Quadruple</td><td class="pla clickable" onclick="dorefresh()">Reconnect</td>';
 			break;
 		case 2:
-			document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla highlight" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
+			document.getElementById("passrow").innerHTML = '<td class="pla clickable" onclick="dopass()">Pass</td><td class="pla highlight" onclick="dodouble()">Double</td><td class="pla clickable" onclick="dotriple()">Triple</td><td class="pla clickable" onclick="doquad()">Quadruple</td><td class="pla clickable" onclick="dorefresh()">Reconnect</td>';
 			break;
 		default:
-			document.getElementById("passrow").innerHTML = '<td class="pla" onclick="dopass()">Pass</td><td class="pla" onclick="dodouble()">Double</td><td class="pla" onclick="dotriple()">Triple</td><td class="pla" onclick="doquad()">Quadruple</td><td class="pla" onclick="dorefresh()">Reconnect</td>';
+			document.getElementById("passrow").innerHTML = '<td class="pla clickable" onclick="dopass()">Pass</td><td class="pla clickable" onclick="dodouble()">Double</td><td class="pla clickable" onclick="dotriple()">Triple</td><td class="pla clickable" onclick="doquad()">Quadruple</td><td class="pla clickable" onclick="dorefresh()">Reconnect</td>';
 	}
 }
