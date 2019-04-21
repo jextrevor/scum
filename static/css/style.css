@@ -1,78 +1,78 @@
 @font-face {
-    font-family: card;
-    src: url(../fonts/card.ttf);
+  font-family: card;
+  src: url(../fonts/card.ttf);
 }
 
 * {
-    user-select: none;
-    cursor: default;
+  user-select: none;
+  cursor: default;
 }
 
 .highlight {
-    background-color: #00AAFF;
+  background-color: #00aaff;
 }
 
 .card {
-    font-family: card;
-    font-size: 1em;
-    border: 1px solid black;
-    text-align: center;
+  font-family: card;
+  font-size: 1em;
+  border: 1px solid black;
+  text-align: center;
 }
 
 .pla {
-    border: 1px solid black;
-    text-align: center;
+  border: 1px solid black;
+  text-align: center;
 }
 
 .clickable:active,
 .card:active {
-    background-color: gray;
+  background-color: gray;
 }
 
 #log {
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    background-color: black;
-    color: #00FF00;
-    height: 25%;
-    overflow-y: auto;
-    padding-left: 2rem;
-    padding-top: 1rem;
-    font-family: monospace;
-    box-sizing: border-box;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  background-color: black;
+  color: #00ff00;
+  height: 25%;
+  overflow-y: auto;
+  padding-left: 2rem;
+  padding-top: 1rem;
+  font-family: monospace;
+  box-sizing: border-box;
 }
 
 #play {
-    height: 75%;
+  height: 75%;
 }
 
 #content {
-    height: 40%;
-    text-align: center;
-    font-family: card;
-    font-size: 3em;
+  height: 40%;
+  text-align: center;
+  font-family: card;
+  font-size: 3em;
 }
 
 #landing {
-    width: 100%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    overflow-y: auto;
-    height: 75%;
-    box-sizing: border-box;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  overflow-y: auto;
+  height: 75%;
+  box-sizing: border-box;
 }
 
 html,
 body {
-    height: 100%;
-    width: 100%;
-    margin: 0px;
-    font-family: sans-serif;
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  font-family: sans-serif;
 }
