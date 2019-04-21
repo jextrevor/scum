@@ -14,19 +14,18 @@ card = 0;
 playernames = [];
 stacks = [];
 me = 0;
-playmode = false;
 mode = 1;
 function decode(card) {
-  if (card == 11) {
+  if (card === 11) {
     return "J";
   }
-  if (card == 12) {
+  if (card === 12) {
     return "Q";
   }
-  if (card == 13) {
+  if (card === 13) {
     return "K";
   }
-  if (card == 14) {
+  if (card === 14) {
     return "A";
   }
   return card;
@@ -88,11 +87,11 @@ socket.on("card", function(json) {
   updatecards();
 });
 function updatecards() {
-  if (card == 1 && player == me) {
+  if (card === 1 && player === me) {
     document.getElementById("content").innerHTML = "Choose a card to pass";
-  } else if (card == 1) {
+  } else if (card === 1) {
     document.getElementById("content").innerHTML = "";
-  } else if (card != 0) {
+  } else if (card !== 0) {
     document.getElementById("content").innerHTML = `${card[1]}x ${decode(
       card[0]
     )}`;
@@ -174,7 +173,7 @@ function dopass() {
   updatepassrow();
 }
 function dodouble() {
-  if (mode == 2) {
+  if (mode === 2) {
     mode = 1;
   } else {
     mode = 2;
@@ -182,7 +181,7 @@ function dodouble() {
   updatepassrow();
 }
 function dotriple() {
-  if (mode == 3) {
+  if (mode === 3) {
     mode = 1;
   } else {
     mode = 3;
@@ -190,7 +189,7 @@ function dotriple() {
   updatepassrow();
 }
 function doquad() {
-  if (mode == 4) {
+  if (mode === 4) {
     mode = 1;
   } else {
     mode = 4;
