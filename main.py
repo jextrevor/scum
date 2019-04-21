@@ -92,10 +92,11 @@ def clearData():
 	card = 0
 	playerpos = list(range(players))
 	#playerpos = [2,0,1]
-	playernames = []
 	nextplayerpos = []
 	for x in range(players):
-		playernames.append("Player "+str(x+1))
+		if len(playernames) <= x:
+			playernames.append("Player "+str(x+1))
+	playernames = playernames[:players]
 	player = 0
 	lastplayer = -1
 	passed = 0
