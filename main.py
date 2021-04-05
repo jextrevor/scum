@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 from flask_socketio import SocketIO, emit
 import sys
 import os
@@ -286,12 +286,9 @@ def updatename(data):
 def vote():
 	templateData = {}
 	return render_template("main.html",**templateData)
-@app.after_request
-def no_cache(response):
-    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
-    response.headers['Cache-Control'] = 'no-cache, no-store'
-    response.headers['Pragma'] = 'no-cache'
-    return response
+@app.route("/robots.txt")
+def verify():
+	return send_file("robots.txt")
 if __name__ == '__main__':
     if 'PORT' in os.environ:
         socketio.run(app, "0.0.0.0",int(os.environ['PORT']))
