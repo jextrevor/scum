@@ -4,3 +4,5 @@ services:
       context: .
     ports:
       - 10004:3000
+    environment:
+      BASE_URL: scum.trevorjex.com
