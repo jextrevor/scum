@@ -1,20 +1,12 @@
-from flask import Flask, render_template, request, send_file
-from flask_socketio import SocketIO, emit
-import sys
+from flask import Flask, render_template, send_file
+from flask_socketio import SocketIO
 import os
-import eventlet
-from gevent import monkey
 app = Flask(__name__)
 socketio = SocketIO(app)
-#from shuffle import riffle
 from random import SystemRandom
-#import Image
-#Questions to ask:
-#How do I shuffle? Do I shuffle physically accurately or do I use random.shuffle?
-#Going along with that question, do I want everything to be physically accurate or do I want it to be fast?
-#It would be fun to make it physically accurate.
-#Should I have someone "shuffle" the deck?
-#SystemRandom is the best source of true random numbers.
+
+# TODO: Clean up and modernize
+
 random = SystemRandom()
 players = 0
 deck = []
@@ -22,45 +14,52 @@ stack1 = []
 stack2 = []
 stacks = []
 havepassed = []
-card = 0 #Current card, or 1 for passing cards or 0 for blank.
+card = 0 # Current card, 1 for passing cards or 0 for blank.
 passed = 0
 playerpos = []
 nextplayerpos = []
 playernames = []
-player = 0 #Current player
+player = 0 # Current player
 lastplayer = -1
+
 def clear():
 	global deck, stack1, stack2
 	deck = []
 	stack1 = []
 	stack2 = []
-	for x in range(4):
+	for _ in range(4):
 		for n in range(2,15):
 			deck.append(n)
+
 def position():
 	t = 0
-	for i in range(52):
+	for _ in range(52):
 		t += random.getrandbits(1);
 	return t
+
 def split(position):
 	global deck, stack1, stack2
 	stack1 = deck[:position]
 	stack2 = deck[position:]
 	deck = []
+
 def fall():
 	global deck, stack1, stack2
 	if len(stack1) > 0 and random.random()<float(len(stack1))/(len(stack1)+len(stack2)):
 		deck.append(stack1.pop(0))
 	else:
 		deck.append(stack2.pop(0))
+
 def riffle():
 	global deck, stack1, stack2
 	while len(stack1)+len(stack2) > 0:
 		fall()
+
 def shuffle(n):
 	for x in range(n):
 		split(position())
 		riffle()
+
 def deal(stacks):
 	while len(deck) > 0:
 		for x in range(len(stacks)):
@@ -68,6 +67,7 @@ def deal(stacks):
 				stacks[x].append(deck.pop())
 	for x in range(len(stacks)):
 		stacks[x].sort()
+
 def switch():
 	global stacks
 	stackstemp = stacks
@@ -76,22 +76,22 @@ def switch():
 		stacks.append([])
 	for x in range(players):
 		stacks[playerpos[x]] = stackstemp[x]
+
 def setup(p):
 	global players, stacks, playerpos, havepassed
 	players = p
 	stacks = []
-	for x in range(p):
+	for _ in range(p):
 		stacks.append([])
 	playerpos = list(range(players))
 	havepassed = []
-	for x in range(players):
+	for _ in range(players):
 		havepassed.append(0)
-	#playerpos = [2,0,1]
+
 def clearData():
-	global card, playerpos, playernames, player, players, havepassed, passed
+	global card, playerpos, playernames, player, players, havepassed, passed, lastplayer, nextplayerpos
 	card = 0
 	playerpos = list(range(players))
-	#playerpos = [2,0,1]
 	nextplayerpos = []
 	for x in range(players):
 		if len(playernames) <= x:
@@ -103,9 +103,11 @@ def clearData():
 	havepassed = []
 	for x in range(players):
 		havepassed.append(0)
+
 def updateHands():
 	global stacks
 	socketio.emit("hands",{"stacks":stacks},namespace="/main")
+
 def updateData():
 	global card, playerpos, playernames, player, players
 	socketio.emit('players',{"players":players},namespace='/main')
@@ -114,29 +116,35 @@ def updateData():
 	socketio.emit('player',{"player":player},namespace='/main')
 	socketio.emit('card',{"card":card},namespace='/main')
 	updateHands()
+
 def doshuffle():
 	clear()
 	shuffle(7)
+
 def domessage(message):
-	with open("log.txt","a") as myfile:
-		myfile.write(message+"\n")
+	print(message)
 	socketio.send(message,namespace="/main")
+
 setup(4)
 clearData()
 doshuffle()
 deal(stacks)
 switch()
 updateData()
+
 @socketio.on('connect', namespace='/main')
 def connect():
 	updateData()
 	domessage("One player connected.")
+
 @socketio.on('disconnect', namespace='/main')
 def disconnect():
 	domessage("One player disconnected.")
+
 @socketio.on('message', namespace='/main')
 def message(msg):
 	domessage(msg)
+
 @socketio.on('play', namespace='/main')
 def playcard(data):
 	global card, player, lastplayer, havepassed, playerpos, nextplayerpos, passed
@@ -265,6 +273,7 @@ def playcard(data):
 					continue
 				break
 			updateData()
+
 @socketio.on('players', namespace='/main')
 def updateplayers(data):
 	domessage("Reformatting for "+str(data["players"])+" players...")
@@ -275,6 +284,7 @@ def updateplayers(data):
 	clearData()
 	updateData()
 	domessage("Ready.")
+
 @socketio.on('name', namespace="/main")
 def updatename(data):
 	global playernames
@@ -282,10 +292,12 @@ def updatename(data):
 	playernames[data["number"]] = data["name"]
 	updateData()
 	domessage("Ready.")
+
 @app.route("/")
 def vote():
 	templateData = {}
 	return render_template("main.html",**templateData)
+
 @app.route("/robots.txt")
 def verify():
 	return send_file("robots.txt")
