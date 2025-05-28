@@ -6,3 +6,4 @@ services:
       - 10004:3000
     environment:
       BASE_URL: https://scum.trevorjex.com
+    restart: unless-stopped
